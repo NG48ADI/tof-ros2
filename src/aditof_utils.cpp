@@ -140,12 +140,12 @@ std::shared_ptr<Camera> initCamera(std::string * arguments)
 }
 
 void getAvailableFrameTypes(
-  const std::shared_ptr<aditof::Camera> & camera, std::vector<std::string> & availableFrameTypes)
+  const std::shared_ptr<aditof::Camera> & camera, std::vector<uint8_t> & availableFrameTypes)
 {
   //get available frae types of camera
   aditof::Status status = aditof::Status::OK;
 
-  status = camera->getAvailableFrameTypes(availableFrameTypes);
+  status = camera->getAvailableModes(availableFrameTypes);
   if (status != Status::OK) {
     LOG(ERROR) << "Couldn't get available frame types";
     return;
@@ -192,10 +192,10 @@ void stopCamera(const std::shared_ptr<aditof::Camera> & camera)
   return;
 }
 
-void setFrameType(const std::shared_ptr<aditof::Camera> & camera, const std::string & type)
+void setFrameType(const std::shared_ptr<aditof::Camera> & camera, const uint8_t & type)
 {
-  std::vector<std::string> frameTypes;
-  camera->getAvailableFrameTypes(frameTypes);
+  std::vector<uint8_t> frameTypes;
+  camera->getAvailableModes(frameTypes);
   if (frameTypes.empty()) {
     LOG(ERROR) << "No frame type available!";
     return;
@@ -218,9 +218,9 @@ void setFrameType(const std::shared_ptr<aditof::Camera> & camera, const std::str
 }
 
 void getAvailableFrameType(
-  const std::shared_ptr<aditof::Camera> & camera, std::vector<std::string> & availableFrameTypes)
+  const std::shared_ptr<aditof::Camera> & camera, std::vector<uint8_t> & availableFrameTypes)
 {
-  camera->getAvailableFrameTypes(availableFrameTypes);
+  camera->getAvailableModes(availableFrameTypes);
   if (availableFrameTypes.empty()) {
     LOG(ERROR) << "No frame type available!";
     return;
@@ -237,16 +237,16 @@ void getCameraDataDetails(
   }
 }
 
-void setMode(const std::shared_ptr<aditof::Camera> & camera, const std::string & mode)
+void setMode(const std::shared_ptr<aditof::Camera> & camera, const uint8_t & mode)
 {
-  std::vector<std::string> modes;
+  std::vector<uint8_t> modes;
   camera->getAvailableModes(modes);
   if (modes.empty()) {
     LOG(ERROR) << "No camera modes available!";
     return;
   }
 
-  std::vector<std::string>::iterator it = std::find(modes.begin(), modes.end(), mode);
+  std::vector<uint8_t>::iterator it = std::find(modes.begin(), modes.end(), mode);
   if (it == modes.end()) {
     LOG(ERROR) << "Requested mode is not available";
     return;
